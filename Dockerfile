@@ -10,6 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         lsb-release \
         software-properties-common \
         wget \
+        unzip \
     && wget -qO /tmp/pubkey.gpg https://openresty.org/package/pubkey.gpg \
     && DEBIAN_FRONTEND=noninteractive apt-key add /tmp/pubkey.gpg \
     && rm /tmp/pubkey.gpg \
