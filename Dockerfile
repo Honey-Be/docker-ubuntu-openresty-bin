@@ -4,6 +4,7 @@ ARG RESTY_LUAROCKS_VERSION="2.4.3"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        build-essential \
         ca-certificates \
         gettext-base \
         gnupg2 \
@@ -11,6 +12,16 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         software-properties-common \
         wget \
         unzip \
+        curl \
+        make \
+        zlib1g-dev \
+        gettext-base \
+        libgd-dev \
+        libgeoip-dev \
+        libncurses5-dev \
+        libperl-dev \
+        libreadline-dev \
+        libxslt1-dev \
     && wget -qO /tmp/pubkey.gpg https://openresty.org/package/pubkey.gpg \
     && DEBIAN_FRONTEND=noninteractive apt-key add /tmp/pubkey.gpg \
     && rm /tmp/pubkey.gpg \
@@ -22,8 +33,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         wget \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y openresty \
-    && DEBIAN_FRONTEND=noninteractive apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/* \
     && cd /tmp \
     && curl -fSL https://github.com/luarocks/luarocks/archive/${RESTY_LUAROCKS_VERSION}.tar.gz -o luarocks-${RESTY_LUAROCKS_VERSION}.tar.gz \
     && tar xzf luarocks-${RESTY_LUAROCKS_VERSION}.tar.gz \
@@ -37,6 +46,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && make install \
     && cd /tmp \
     && rm -rf luarocks-${RESTY_LUAROCKS_VERSION} luarocks-${RESTY_LUAROCKS_VERSION}.tar.gz \
+    && DEBIAN_FRONTEND=noninteractive apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* \
     && ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log \
     && ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log
 
